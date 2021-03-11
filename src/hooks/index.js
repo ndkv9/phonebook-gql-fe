@@ -34,3 +34,16 @@ export const usePerson = () => {
 
 	return { person, showPerson, resetPerson }
 }
+
+export const useError = () => {
+	const [error, setError] = useState(null)
+
+	const notify = message => {
+		setError(message)
+		setTimeout(() => {
+			setError(null)
+		}, 3000)
+	}
+
+	return [error, notify]
+}
