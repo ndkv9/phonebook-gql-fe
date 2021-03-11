@@ -1,39 +1,46 @@
-import { useField } from '../hooks/index'
-import { useEffect } from 'react'
-import { useError } from '../hooks/index'
+import React, { useState, useEffect } from 'react'
 import { useMutation } from '@apollo/client'
 import { EDIT_NUMBER } from '../queries'
 
-const PhoneForm = () => {
-	const { reset: resetName, ...name } = useField('text')
-	const { reset: resetPhone, ...phone } = useField('text')
+const PhoneForm = ({ notify }) => {
+	const [name, setName] = useState('')
+	const [phone, setPhone] = useState('')
 
 	const [changeNumber, result] = useMutation(EDIT_NUMBER)
-	const [error, notify] = useError()
-
-	const submit = event => {
-		event.preventDefault()
-
-		changeNumber({ variables: { name: name.value, phone: phone.value } })
-
-		resetName()
-		resetPhone()
-	}
 
 	useEffect(() => {
-		if (result.data && result.data.editNumber === null) {
-			notify('person not found')
+		if (result.data && !result.data.editNumber) {
+			notify('name not found')
 		}
-	}, [result.data, notify])
+	}, [result.data]) // eslint-disable-line
+
+	const submit = async event => {
+		event.preventDefault()
+
+		changeNumber({ variables: { name, phone } })
+
+		setName('')
+		setPhone('')
+	}
+
 	return (
 		<div>
 			<h2>change number</h2>
+
 			<form onSubmit={submit}>
 				<div>
-					name <input {...name} />
+					name{' '}
+					<input
+						value={name}
+						onChange={({ target }) => setName(target.value)}
+					/>
 				</div>
 				<div>
-					phone <input {...phone} />
+					phone{' '}
+					<input
+						value={phone}
+						onChange={({ target }) => setPhone(target.value)}
+					/>
 				</div>
 				<button type='submit'>change number</button>
 			</form>

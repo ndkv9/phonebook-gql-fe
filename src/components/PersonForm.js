@@ -1,12 +1,13 @@
+import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { useField } from '../hooks/index'
-import { CREATE_PERSON, ALL_PERSONS } from '../queries'
+
+import { ALL_PERSONS, CREATE_PERSON } from '../queries'
 
 const PersonForm = ({ setError }) => {
-	const { reset: resetName, ...name } = useField('text')
-	const { reset: resetPhone, ...phone } = useField('text')
-	const { reset: resetStreet, ...street } = useField('text')
-	const { reset: resetCity, ...city } = useField('text')
+	const [name, setName] = useState('')
+	const [phone, setPhone] = useState('')
+	const [street, setStreet] = useState('')
+	const [city, setCity] = useState('')
 
 	const [createPerson] = useMutation(CREATE_PERSON, {
 		refetchQueries: [{ query: ALL_PERSONS }],
@@ -15,39 +16,54 @@ const PersonForm = ({ setError }) => {
 		},
 	})
 
-	const submit = event => {
+	const submit = async event => {
 		event.preventDefault()
 
 		createPerson({
-			variables: {
-				name: name.value,
-				phone: phone.value,
-				street: street.value,
-				city: city.value,
-			},
+			variables: { name, phone, street, city },
 		})
 
-		resetName()
-		resetPhone()
-		resetStreet()
-		resetCity()
+		setName('')
+		setPhone('')
+		setStreet('')
+		setCity('')
 	}
+
 	return (
-		<form onSubmit={submit}>
-			<div>
-				name <input {...name} />
-			</div>
-			<div>
-				phone <input {...phone} />
-			</div>
-			<div>
-				street <input {...street} />
-			</div>
-			<div>
-				city <input {...city} />
-			</div>
-			<button type='submit'>add!</button>
-		</form>
+		<div>
+			<h2>create new</h2>
+			<form onSubmit={submit}>
+				<div>
+					name{' '}
+					<input
+						value={name}
+						onChange={({ target }) => setName(target.value)}
+					/>
+				</div>
+				<div>
+					phone{' '}
+					<input
+						value={phone}
+						onChange={({ target }) => setPhone(target.value)}
+					/>
+				</div>
+				<div>
+					street{' '}
+					<input
+						value={street}
+						onChange={({ target }) => setStreet(target.value)}
+					/>
+				</div>
+				<div>
+					city{' '}
+					<input
+						value={city}
+						onChange={({ target }) => setCity(target.value)}
+					/>
+				</div>
+				<button type='submit'>add!</button>
+			</form>
+		</div>
 	)
 }
 
