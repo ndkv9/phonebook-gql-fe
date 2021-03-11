@@ -33,24 +33,21 @@ const PersonForm = ({ setError }) => {
 		resetCity()
 	}
 	return (
-		<div>
-			<h2>add new</h2>
-			<form onSubmit={submit}>
-				<div>
-					name <input {...name} />
-				</div>
-				<div>
-					phone <input {...phone} />
-				</div>
-				<div>
-					street <input {...street} />
-				</div>
-				<div>
-					city <input {...city} />
-				</div>
-				<button type='submit'>add!</button>
-			</form>
-		</div>
+		<form onSubmit={submit}>
+			<div>
+				name <input {...name} />
+			</div>
+			<div>
+				phone <input {...phone} />
+			</div>
+			<div>
+				street <input {...street} />
+			</div>
+			<div>
+				city <input {...city} />
+			</div>
+			<button type='submit'>add!</button>
+		</form>
 	)
 }
 
