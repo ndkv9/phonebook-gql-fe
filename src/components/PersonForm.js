@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
+import { useField } from '../hooks/index'
 
 const CREATE_PERSON = gql`
 	mutation createPerson(
@@ -21,10 +21,10 @@ const CREATE_PERSON = gql`
 `
 
 const PersonForm = () => {
-	const [name, setName] = useState('')
-	const [phone, setPhone] = useState('')
-	const [street, setStreet] = useState('')
-	const [city, setCity] = useState('')
+	const { reset: resetName, ...name } = useField('text')
+	const { reset: resetPhone, ...phone } = useField('text')
+	const { reset: resetStreet, ...street } = useField('text')
+	const { reset: resetCity, ...city } = useField('text')
 
 	const [createPerson] = useMutation(CREATE_PERSON)
 
@@ -33,42 +33,26 @@ const PersonForm = () => {
 
 		createPerson({ variables: { name, phone, street, city } })
 
-		setName('')
-		setPhone('')
-		setStreet('')
-		setCity('')
+		resetName()
+		resetPhone()
+		resetStreet()
+		resetCity()
 	}
 	return (
 		<div>
 			<h2>add new</h2>
 			<form onSubmit={submit}>
 				<div>
-					name{' '}
-					<input
-						value={name}
-						onChange={({ target }) => setName(target.value)}
-					/>
+					name <input {...name} />
 				</div>
 				<div>
-					phone{' '}
-					<input
-						value={phone}
-						onChange={({ target }) => setPhone(target.value)}
-					/>
+					phone <input {...phone} />
 				</div>
 				<div>
-					street{' '}
-					<input
-						value={street}
-						onChange={({ target }) => setStreet(target.value)}
-					/>
+					street <input {...street} />
 				</div>
 				<div>
-					city{' '}
-					<input
-						value={city}
-						onChange={({ target }) => setCity(target.value)}
-					/>
+					city <input {...city} />
 				</div>
 				<button type='submit'>add!</button>
 			</form>
