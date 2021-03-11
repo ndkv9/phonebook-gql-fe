@@ -1,32 +1,23 @@
-import { useLazyQuery } from '@apollo/client'
-import { useEffect, useState } from 'react'
-import { FIND_PERSON } from '../queries'
+import { usePerson } from '../hooks/index'
+
+const Person = ({ person, reset }) => {
+	return (
+		<div>
+			<h2>{person.name}</h2>
+			<div>
+				{person.address.street} {person.address.city}
+			</div>
+			<div>{person.phone}</div>
+			<button onClick={() => reset()}>close</button>
+		</div>
+	)
+}
 
 const Persons = ({ persons }) => {
-	const [getPerson, result] = useLazyQuery(FIND_PERSON)
-	const [person, setPerson] = useState(null)
-
-	const showPerson = name => {
-		getPerson({ variables: { nameToSearch: name } })
-	}
-
-	useEffect(() => {
-		if (result.data) {
-			setPerson(result.data.findPerson)
-		}
-	}, [result])
+	const { person, showPerson, resetPerson } = usePerson()
 
 	if (person) {
-		return (
-			<div>
-				<h2>{person.name}</h2>
-				<div>
-					{person.address.street} {person.address.city}
-				</div>
-				<div>{person.phone}</div>
-				<button onClick={() => setPerson(null)}>close</button>
-			</div>
-		)
+		return <Person person={person} reset={resetPerson} />
 	}
 
 	return (
