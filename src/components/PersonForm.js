@@ -31,7 +31,14 @@ const PersonForm = () => {
 	const submit = event => {
 		event.preventDefault()
 
-		createPerson({ variables: { name, phone, street, city } })
+		createPerson({
+			variables: {
+				name: name.value,
+				phone: phone.value,
+				street: street.value,
+				city: city.value,
+			},
+		})
 
 		resetName()
 		resetPhone()
