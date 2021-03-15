@@ -14,6 +14,7 @@ const Notify = ({ errorMessage }) => {
 }
 
 const App = () => {
+	const [token, setToken] = useState(null)
 	const [errorMessage, setErrorMessage] = useState(null)
 	const result = useQuery(ALL_PERSONS)
 
@@ -28,6 +29,15 @@ const App = () => {
 		}, 5000)
 	}
 
+	if (!token) {
+		return (
+			<div>
+				<Notify errorMessage={errorMessage} />
+				<h2>login</h2>
+				<LoginForm setToken={setToken} setError={notify} />
+			</div>
+		)
+	}
 	return (
 		<div>
 			<Notify errorMessage={errorMessage} />
