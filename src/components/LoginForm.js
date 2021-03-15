@@ -20,7 +20,7 @@ const LoginForm = ({ setError, setToken }) => {
 
 			localStorage.setItem('phonenumbers-user-token', token)
 		}
-	}, [result.data])
+	}, [result.data]) // eslint-disable-line
 
 	const submit = async event => {
 		event.preventDefault()
@@ -37,7 +37,6 @@ const LoginForm = ({ setError, setToken }) => {
 
 	return (
 		<div>
-			<h2>form</h2>
 			<form onSubmit={submit}>
 				<div>
 					username{' '}
